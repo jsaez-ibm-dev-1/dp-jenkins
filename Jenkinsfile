@@ -4,7 +4,7 @@ pipeline {
         IBM_ENTITLEMENT_KEY = credentials('ibm_entitlement_key')
         ADMIN_PASSWORD      = credentials('admin_password')
         RELEASE_NAME        = "hello"        
-        NAMESPACE           = "dp-jenkins"
+        NAMESPACE           = "dp"
         LICENSE             = "L-RJON-CCAT5F"
         USE                 = "production"
         VERSION             = "10.5.0.2"
