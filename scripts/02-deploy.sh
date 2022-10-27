@@ -20,7 +20,7 @@ namespace=${2:-dp}
 license=${3:-L-RJON-C5SF54}
 use=${4:-production}
 version=${5:-10.0.4.0}
-domain_name=$(oc get route -n ibm-common-services cp-console -o=jsonpath='{.spec.host}'  | cut -c 12-)
+domain_name=$(oc get route -n openshift-console console -o=jsonpath='{.spec.host}'  | cut -c 27-)
 
 export release_name=${release_name}
 export namespace=${namespace}
