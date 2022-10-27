@@ -45,7 +45,7 @@ metadata:
   name: hello-route
   namespace: dp
 spec:
-  host: hello.itzroks-3100015379-wxzo6e-6ccd7f378ae819553d37d5f2ee142bd6-0000.au-syd.containers.appdomain.cloud
+  host: hello.itzroks-664001s7x8-0phxra-6ccd7f378ae819553d37d5f2ee142bd6-0000.us-east.containers.appdomain.cloud
   port:
     targetPort: 8000
   tls:
