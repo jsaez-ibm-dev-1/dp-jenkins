@@ -16,11 +16,11 @@ spec:
     accessLevel: privileged
     passwordSecret: admin-credentials
   domains:
-  - name: hello
+  - name: ibm-test
     dpApp:
       config:
       - default-cfg
-      - hello-cfg
+      - ibm-test-cfg
       local:
       - default-local
 ---

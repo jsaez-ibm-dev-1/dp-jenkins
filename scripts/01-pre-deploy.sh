@@ -16,7 +16,7 @@ echo " INFO: Pre deploy"
 echo "----------------------------------------------------------------------"
 
 ibm_entitlement_key=${1}
-release_name=${2:-hello}
+release_name=${2:-ibm-test}
 namespace=${3:-dp}
 admin_password=${4:-admin}
 
@@ -26,7 +26,7 @@ secret_name="ibm-entitlement-key"
 docker_registry=cp.icr.io
 docker_registry_username=cp
 docker_registry_password=${ibm_entitlement_key}
-docker_registry_user_email="khongks@gmail.com"
+docker_registry_user_email="jeric.saez@ibm.com"
 create_pull_secret ${secret_name} ${namespace} ${docker_registry} ${docker_registry_username} ${docker_registry_password} ${docker_registry_user_email}
 
 echo "Apply all YAMLs from the backup"

@@ -1,9 +1,9 @@
 apiVersion: v1
 data:
-  hello.cfg: |
+  ibm-test.cfg: |
     top; configure terminal;
 
-    # configuration b27a5adc7cf6427bb44e141d9ff9b624 generated Fri May 27 11:36:56 2022; firmware version 337833
+    # configuration f98622fde5eb462fa5fbd66f070b173d generated Thu Oct 27 22:09:31 2022; firmware version 333705
 
     %if% available "domain-settings"
 
@@ -20,7 +20,10 @@ data:
     %if% available "ssl-client"
 
     ssl-client "ssl-client"
-      protocols "TLSv1d0+TLSv1d1+TLSv1d2"
+      protocols "TLSv1d1+TLSv1d2+TLSv1d3"
+      ciphers AES_256_GCM_SHA384
+      ciphers CHACHA20_POLY1305_SHA256
+      ciphers AES_128_GCM_SHA256
       ciphers ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
       ciphers ECDHE_RSA_WITH_AES_256_GCM_SHA384
       ciphers ECDHE_ECDSA_WITH_AES_256_CBC_SHA384
@@ -51,11 +54,6 @@ data:
       ciphers RSA_WITH_AES_128_GCM_SHA256
       ciphers RSA_WITH_AES_128_CBC_SHA256
       ciphers RSA_WITH_AES_128_CBC_SHA
-      ciphers ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA
-      ciphers ECDHE_RSA_WITH_3DES_EDE_CBC_SHA
-      ciphers DHE_RSA_WITH_3DES_EDE_CBC_SHA
-      ciphers DHE_DSS_WITH_3DES_EDE_CBC_SHA
-      ciphers RSA_WITH_3DES_EDE_CBC_SHA
       no validate-server-cert
       caching
       cache-timeout 300
@@ -67,6 +65,7 @@ data:
       curves secp256r1
       use-custom-sni-hostname no
       no validate-hostname
+      hostname-validation-flags ""
       no hostname-validation-fail
       enable-tls13-compat
     exit
@@ -137,7 +136,7 @@ data:
 
     api-security "default-api-security"
       title "default-security"
-      correlation-path "$.assembly.execute[5]"
+      correlation-path "$.assembly.execute[4]"
     exit
 
     %endif%
@@ -161,7 +160,7 @@ data:
 
     assembly-html-page "default-html-page"
       title "default-html-page"
-      correlation-path "$.assembly.execute[2]"
+      correlation-path "$.assembly.execute[1]"
       output "message"
     exit
 
@@ -171,7 +170,7 @@ data:
 
     assembly-rate-limit "default-api-ratelimit"
       title "default-ratelimit"
-      correlation-path "$.assembly.execute[4]"
+      correlation-path "$.assembly.execute[3]"
       source plan-default
     exit
 
@@ -209,7 +208,7 @@ data:
 
     %endif%
 
-    action "rest-proxy_rest-gw-policy_rule_delete_gatewayscript_2"
+    action "rest-proxy_rest-gw-policy_rule_get_gatewayscript_0"
       reset
       type gatewayscript
       input "INPUT"
@@ -236,142 +235,7 @@ data:
       http-method-limited2 POST
     exit
 
-    action "rest-proxy_rest-gw-policy_rule_delete_results_output_0"
-      reset
-      type results
-      input "PIPE"
-      parse-settings-result-type none
-      transform-language none
-      no charset-transparency
-      named-inouts default
-      ssl-client-type proxy
-      output-type default
-      no transactional
-      soap-validation body
-      sql-source-type static
-      strip-signature
-      no asynchronous
-      results-mode first-available
-      retry-count 0
-      retry-interval 1000
-      no multiple-outputs
-      iterator-type XPATH
-      timeout 0
-      http-method GET
-      http-method-limited POST
-      http-method-limited2 POST
-    exit
-
-    action "rest-proxy_rest-gw-policy_rule_delete_slm_0"
-      reset
-      type slm
-      input "INPUT"
-      parse-settings-result-type none
-      transform-language none
-      tx-mode default
-      output "NULL"
-      no charset-transparency
-      named-inouts default
-      ssl-client-type proxy
-      output-type default
-      no transactional
-      slm "rest-proxy_rest-gw-slm"
-      soap-validation body
-      sql-source-type static
-      strip-signature
-      no asynchronous
-      results-mode first-available
-      retry-count 0
-      retry-interval 1000
-      no multiple-outputs
-      iterator-type XPATH
-      timeout 0
-      http-method GET
-      http-method-limited POST
-      http-method-limited2 POST
-    exit
-
-    action "rest-proxy_rest-gw-policy_rule_error_gatewayscript_7"
-      reset
-      type gatewayscript
-      input "INPUT"
-      parse-settings-result-type none
-      transform-language none
-      gatewayscript-location "store:///gatewayscript/example-error.js"
-      output "PIPE"
-      no charset-transparency
-      named-inouts default
-      ssl-client-type proxy
-      no transactional
-      soap-validation body
-      sql-source-type static
-      strip-signature
-      no asynchronous
-      results-mode first-available
-      retry-count 0
-      retry-interval 1000
-      no multiple-outputs
-      iterator-type XPATH
-      timeout 0
-      http-method GET
-      http-method-limited POST
-      http-method-limited2 POST
-    exit
-
-    action "rest-proxy_rest-gw-policy_rule_error_results_output_0"
-      reset
-      type results
-      input "PIPE"
-      parse-settings-result-type none
-      transform-language none
-      no charset-transparency
-      named-inouts default
-      ssl-client-type proxy
-      output-type default
-      no transactional
-      soap-validation body
-      sql-source-type static
-      strip-signature
-      no asynchronous
-      results-mode first-available
-      retry-count 0
-      retry-interval 1000
-      no multiple-outputs
-      iterator-type XPATH
-      timeout 0
-      http-method GET
-      http-method-limited POST
-      http-method-limited2 POST
-    exit
-
-    action "rest-proxy_rest-gw-policy_rule_get_gatewayscript_1"
-      reset
-      type gatewayscript
-      input "INPUT"
-      parse-settings-result-type none
-      transform-language none
-      gatewayscript-location "store:///identity.js"
-      output "PIPE"
-      no charset-transparency
-      named-inouts default
-      ssl-client-type proxy
-      no transactional
-      soap-validation body
-      sql-source-type static
-      strip-signature
-      no asynchronous
-      results-mode first-available
-      retry-count 0
-      retry-interval 1000
-      no multiple-outputs
-      iterator-type XPATH
-      timeout 0
-      http-method GET
-      http-method-limited POST
-      http-method-limited2 POST
-    exit
-
-    action "rest-proxy_rest-gw-policy_rule_get_results_output_0"
+    action "rest-proxy_rest-gw-policy_rule_get_results_0"
       reset
       type results
       input "PIPE"
@@ -423,259 +287,12 @@ data:
       http-method-limited2 POST
     exit
 
-    action "rest-proxy_rest-gw-policy_rule_post_gatewayscript_4"
-      reset
-      type gatewayscript
-      input "INPUT"
-      parse-settings-result-type none
-      transform-language none
-      gatewayscript-location "store:///identity.js"
-      output "PIPE"
-      no charset-transparency
-      named-inouts default
-      ssl-client-type proxy
-      no transactional
-      soap-validation body
-      sql-source-type static
-      strip-signature
-      no asynchronous
-      results-mode first-available
-      retry-count 0
-      retry-interval 1000
-      no multiple-outputs
-      iterator-type XPATH
-      timeout 0
-      http-method GET
-      http-method-limited POST
-      http-method-limited2 POST
-    exit
-
-    action "rest-proxy_rest-gw-policy_rule_post_results_output_0"
-      reset
-      type results
-      input "PIPE"
-      parse-settings-result-type none
-      transform-language none
-      no charset-transparency
-      named-inouts default
-      ssl-client-type proxy
-      output-type default
-      no transactional
-      soap-validation body
-      sql-source-type static
-      strip-signature
-      no asynchronous
-      results-mode first-available
-      retry-count 0
-      retry-interval 1000
-      no multiple-outputs
-      iterator-type XPATH
-      timeout 0
-      http-method GET
-      http-method-limited POST
-      http-method-limited2 POST
-    exit
-
-    action "rest-proxy_rest-gw-policy_rule_post_slm_0"
-      reset
-      type slm
-      input "INPUT"
-      parse-settings-result-type none
-      transform-language none
-      tx-mode default
-      output "NULL"
-      no charset-transparency
-      named-inouts default
-      ssl-client-type proxy
-      output-type default
-      no transactional
-      slm "rest-proxy_rest-gw-slm"
-      soap-validation body
-      sql-source-type static
-      strip-signature
-      no asynchronous
-      results-mode first-available
-      retry-count 0
-      retry-interval 1000
-      no multiple-outputs
-      iterator-type XPATH
-      timeout 0
-      http-method GET
-      http-method-limited POST
-      http-method-limited2 POST
-    exit
-
-    action "rest-proxy_rest-gw-policy_rule_put_gatewayscript_3"
-      reset
-      type gatewayscript
-      input "INPUT"
-      parse-settings-result-type none
-      transform-language none
-      gatewayscript-location "store:///identity.js"
-      output "PIPE"
-      no charset-transparency
-      named-inouts default
-      ssl-client-type proxy
-      no transactional
-      soap-validation body
-      sql-source-type static
-      strip-signature
-      no asynchronous
-      results-mode first-available
-      retry-count 0
-      retry-interval 1000
-      no multiple-outputs
-      iterator-type XPATH
-      timeout 0
-      http-method GET
-      http-method-limited POST
-      http-method-limited2 POST
-    exit
-
-    action "rest-proxy_rest-gw-policy_rule_put_results_output_0"
-      reset
-      type results
-      input "PIPE"
-      parse-settings-result-type none
-      transform-language none
-      no charset-transparency
-      named-inouts default
-      ssl-client-type proxy
-      output-type default
-      no transactional
-      soap-validation body
-      sql-source-type static
-      strip-signature
-      no asynchronous
-      results-mode first-available
-      retry-count 0
-      retry-interval 1000
-      no multiple-outputs
-      iterator-type XPATH
-      timeout 0
-      http-method GET
-      http-method-limited POST
-      http-method-limited2 POST
-    exit
-
-    action "rest-proxy_rest-gw-policy_rule_put_slm_0"
-      reset
-      type slm
-      input "INPUT"
-      parse-settings-result-type none
-      transform-language none
-      tx-mode default
-      output "NULL"
-      no charset-transparency
-      named-inouts default
-      ssl-client-type proxy
-      output-type default
-      no transactional
-      slm "rest-proxy_rest-gw-slm"
-      soap-validation body
-      sql-source-type static
-      strip-signature
-      no asynchronous
-      results-mode first-available
-      retry-count 0
-      retry-interval 1000
-      no multiple-outputs
-      iterator-type XPATH
-      timeout 0
-      http-method GET
-      http-method-limited POST
-      http-method-limited2 POST
-    exit
-
-    action "rest-proxy_rest-gw-policy_rule_server_results_output_0"
-      reset
-      type results
-      input "INPUT"
-      parse-settings-result-type none
-      transform-language none
-      no charset-transparency
-      named-inouts default
-      ssl-client-type proxy
-      output-type default
-      no transactional
-      soap-validation body
-      sql-source-type static
-      strip-signature
-      no asynchronous
-      results-mode first-available
-      retry-count 0
-      retry-interval 1000
-      no multiple-outputs
-      iterator-type XPATH
-      timeout 0
-      http-method GET
-      http-method-limited POST
-      http-method-limited2 POST
-    exit
-
-    rule "rest-proxy_rest-gw-policy_rule_delete"
-      reset
-        action "rest-proxy_rest-gw-policy_rule_delete_slm_0"
-        action "rest-proxy_rest-gw-policy_rule_delete_gatewayscript_2"
-        action "rest-proxy_rest-gw-policy_rule_delete_results_output_0"
-      type request-rule
-      input-filter none
-      output-filter none
-      no non-xml-processing
-      no unprocessed
-    exit
-
-    rule "rest-proxy_rest-gw-policy_rule_error"
-      reset
-        action "rest-proxy_rest-gw-policy_rule_error_gatewayscript_7"
-        action "rest-proxy_rest-gw-policy_rule_error_results_output_0"
-      type error-rule
-      input-filter none
-      output-filter none
-      no non-xml-processing
-      no unprocessed
-    exit
-
     rule "rest-proxy_rest-gw-policy_rule_get"
       reset
         action "rest-proxy_rest-gw-policy_rule_get_slm_0"
-        action "rest-proxy_rest-gw-policy_rule_get_gatewayscript_1"
-        action "rest-proxy_rest-gw-policy_rule_get_results_output_0"
+        action "rest-proxy_rest-gw-policy_rule_get_gatewayscript_0"
+        action "rest-proxy_rest-gw-policy_rule_get_results_0"
       type request-rule
-      input-filter none
-      output-filter none
-      no non-xml-processing
-      no unprocessed
-    exit
-
-    rule "rest-proxy_rest-gw-policy_rule_post"
-      reset
-        action "rest-proxy_rest-gw-policy_rule_post_slm_0"
-        action "rest-proxy_rest-gw-policy_rule_post_gatewayscript_4"
-        action "rest-proxy_rest-gw-policy_rule_post_results_output_0"
-      type request-rule
-      input-filter none
-      output-filter none
-      no non-xml-processing
-      no unprocessed
-    exit
-
-    rule "rest-proxy_rest-gw-policy_rule_put"
-      reset
-        action "rest-proxy_rest-gw-policy_rule_put_slm_0"
-        action "rest-proxy_rest-gw-policy_rule_put_gatewayscript_3"
-        action "rest-proxy_rest-gw-policy_rule_put_results_output_0"
-      type request-rule
-      input-filter none
-      output-filter none
-      no non-xml-processing
-      no unprocessed
-    exit
-
-    rule "rest-proxy_rest-gw-policy_rule_server"
-      reset
-        action "rest-proxy_rest-gw-policy_rule_server_results_output_0"
-      type response-rule
       input-filter none
       output-filter none
       no non-xml-processing
@@ -696,14 +313,10 @@ data:
       action default-api-result
     exit
 
-    api-rule "default-assembly-finally-global"
-      no dynamic-actions-mode
-      action default-api-result
-    exit
-
     api-rule "default-assembly-func-rule"
       no dynamic-actions-mode
       action default-func-call-global
+      action default-api-result
     exit
 
     api-rule "default-assembly-rule-global"
@@ -725,7 +338,6 @@ data:
     api-rule "default-preflow-rule"
       no dynamic-actions-mode
       action default-api-cors
-      action default-wsdl
       action default-html-page
       action default-api-client-identification
       action default-api-ratelimit
@@ -738,7 +350,6 @@ data:
 
     assembly "default-assembly-global"
       rule default-assembly-rule-global
-      finally default-assembly-finally-global
     exit
 
     assembly "default-assembly-main"
@@ -755,32 +366,8 @@ data:
 
     %endif%
 
-    matching "rest-proxy_ALL"
-      urlmatch "*"
-      no match-with-pcre
-      no combine-with-or
-    exit
-
-    matching "rest-proxy_http-delete"
-      methodmatch "DELETE"
-      no match-with-pcre
-      no combine-with-or
-    exit
-
     matching "rest-proxy_http-get"
       methodmatch "GET"
-      no match-with-pcre
-      no combine-with-or
-    exit
-
-    matching "rest-proxy_http-post"
-      methodmatch "POST"
-      no match-with-pcre
-      no combine-with-or
-    exit
-
-    matching "rest-proxy_http-put"
-      methodmatch "PUT"
       no match-with-pcre
       no combine-with-or
     exit
@@ -799,11 +386,6 @@ data:
       xsldefault "store:///identity.xsl"
       xquerydefault "store:///reject-all-json.xq"
       match "rest-proxy_http-get" "rest-proxy_rest-gw-policy_rule_get"
-      match "rest-proxy_http-delete" "rest-proxy_rest-gw-policy_rule_delete"
-      match "rest-proxy_http-put" "rest-proxy_rest-gw-policy_rule_put"
-      match "rest-proxy_http-post" "rest-proxy_rest-gw-policy_rule_post"
-      match "rest-proxy_ALL" "rest-proxy_rest-gw-policy_rule_server"
-      match "rest-proxy_ALL" "rest-proxy_rest-gw-policy_rule_error"
     exit
 
     %if% available "metadata"
@@ -933,11 +515,11 @@ data:
 
     %if% available "source-http"
 
-    source-http "rest-proxy_rest-gw-fsh"
+    source-http "http-handler"
       local-address 0.0.0.0
       port 8000
       http-client-version HTTP/1.1
-      allowed-features "HTTP-1.0+HTTP-1.1+POST+GET+PUT+DELETE+QueryString+FragmentIdentifiers"
+      allowed-features "HTTP-1.0+HTTP-1.1+POST+GET+PUT+QueryString+FragmentIdentifiers"
       persistent-connections
       max-persistent-reuse 0
       no compression
@@ -954,7 +536,6 @@ data:
       http2-max-frame 16384
       no http2-stream-header
       chunked-encoding
-      header-timeout 30000
     exit
 
     %endif%
@@ -1004,7 +585,7 @@ data:
 
     %if% available "policy-attachments"
 
-    policy-attachments "rest-proxy_rest-gw"
+    policy-attachments "ibm-test--mpg"
       enforcement-mode enforce
       policy-references
       sla-enforcement-mode allow-if-no-sla
@@ -1014,10 +595,10 @@ data:
 
     %if% available "mpgw"
 
-    mpgw "rest-proxy"
+    mpgw "ibm-test--mpg"
       no policy-parameters
       priority normal
-      front-protocol rest-proxy_rest-gw-fsh
+      front-protocol http-handler
       xml-manager default
       ssl-client-type client
       ssl-client ssl-client
@@ -1044,9 +625,9 @@ data:
       max-node-size 33554432
       forbid-external-references
       external-references forbid
-      max-prefixes 0
-      max-namespaces 0
-      max-local-names 0
+      max-prefixes 1024
+      max-namespaces 1024
+      max-local-names 60000
       attachment-byte-count 2000000000
       attachment-package-byte-count 0
       debugger-type internal
@@ -1095,7 +676,7 @@ data:
       wsrm-source-maximum-queue-length 30
       wsrm-source-request-ack-count 1
       wsrm-source-inactivity-close-interval 360
-      force-policy-exec
+      no force-policy-exec
       rewrite-errors
       delay-errors
       delay-errors-duration 1000
@@ -1103,17 +684,17 @@ data:
       no http2-required
       request-type json
       response-type json
-      no follow-redirects
-      rewrite-location-header
+      follow-redirects
+      no rewrite-location-header
       stylepolicy rest-proxy_rest-gw-policy
       type static-backend
       no compression
       no enable-compressed-payload-passthrough
       no allow-cache-control
-      policy-attachments rest-proxy_rest-gw
+      policy-attachments ibm-test--mpg
       no wsmagent-monitor
       wsmagent-monitor-capture-mode all-messages
-      proxy-http-response
+      no proxy-http-response
       transaction-timeout 0
     exit
 
@@ -1304,6 +885,10 @@ data:
 
     rate-limit-config
       admin-state enabled
+      no advanced-tuning
+      scale-collector-interval 100
+      scale-cache-table-count 1
+      scale-cache-cleanup-interval 1000
       gateway-peering-manager default
     exit
 
@@ -1341,7 +926,7 @@ data:
 
     api-client-identification "default-api-client-identification"
       title "default-client-identification"
-      correlation-path "$.assembly.execute[3]"
+      correlation-path "$.assembly.execute[2]"
     exit
 
     %endif%
@@ -1351,24 +936,6 @@ data:
     api-cors "default-api-cors"
       title "default-cors"
       correlation-path "$.assembly.execute[0]"
-    exit
-
-    %endif%
-
-    %if% available "api-final"
-
-    api-final "default-api-final"
-      output "OUTPUT"
-    exit
-
-    %endif%
-
-    %if% available "assembly-wsdl"
-
-    assembly-wsdl "default-wsdl"
-      title "default-wsdl"
-      correlation-path "$.assembly.execute[1]"
-      output "message"
     exit
 
     %endif%
@@ -1391,4 +958,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: hello-cfg
+  name: ibm-test-cfg
